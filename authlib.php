@@ -2,16 +2,21 @@
 
 session_start();
 
+//Set Table names here
+$userTable = "cauth_users";
+$rentalTable = "Rentals";
+$featuredTable = "Featured";
+
 if(!isset($killOverride) && !isValidID()) {
 	header('Location: login.php');
 	die('');
 }
 
 function isValidID() {
-	$tableName = "cauth_users";
+	global $userTable;
 	$addr = $_SERVER['REMOTE_ADDR'] ? : "Unknown";
 	$conn = setupConnection();
-	$cmd = $conn->prepare("select * from $tableName where addr = '$addr'");
+	$cmd = $conn->prepare("select * from $userTable where addr = '$addr'");
 	$cmd->execute();
 	$results = $cmd->fetchAll();
 	$conn = null;
@@ -26,8 +31,9 @@ function isValidID() {
 
 //Setups the connection to the server
 function &setupConnection() {
-	require "../mysql_gclogin.php";
+	//require $_SERVER['DOCUMENT_ROOT'] . "mysql_gclogin.php";
 	//$dbName = "cauth";
+	require "mysql_login.php";
 	$conn = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUsername, $dbPassword);
 	$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //debug
 	return $conn;

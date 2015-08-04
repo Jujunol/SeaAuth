@@ -1,25 +1,20 @@
 <?php 
 
 $pageTitle = "SeaAuth - Home";
-require_once "authlib.php";
-require_once "header.php";
+require_once "../authlib.php";
+require_once "../header.php";
 
 ?>
 <main id="content-wrapper" class="container">
 	<h1>SeaAuth</h1>
 	<h3>Rental Management</h3>
 	<hr />
-	<a href="index.php" class="btn btn-default">&lt;-- SeaAuth</a>
+	<a href="../index.php" class="btn btn-default">&lt;-- SeaAuth</a>
 	<table class="table table-striped table-hover">
 		<?php
 
-		//setup login
-		require_once "login_cred.php";
-		//$tableName = "Rentals";
-
 		//establish connection
-		$conn = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUsername, $dbPassword);
-		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$conn = setupConnection();
 
 		//Get Columns
 		/*$cmd = $conn->prepare("desc $tableName");
@@ -28,7 +23,7 @@ require_once "header.php";
 		$cols = array("index", "active", "title");
 
 		//Get fields
-		$cmd = $conn->prepare("select `index`, active, title from $tableName order by `index`");
+		$cmd = $conn->prepare("select `index`, active, title from $rentalTable order by `index`");
 		$cmd->execute();
 		$results = $cmd->fetchAll();
 
@@ -55,4 +50,4 @@ require_once "header.php";
 		?>
 	</table>
 </main>
-<?php require_once "footer.php"; ?>
+<?php require_once "../footer.php"; ?>

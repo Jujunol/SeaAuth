@@ -10,21 +10,19 @@ require_once "header.php";
 	<h3>User Management</h3>
 	<hr />
 	<a href="user.php" class="btn btn-default">Add User</a>
-	<a href="home.php" class="btn btn-default">Enter Site</a>
+	<a href="sands/rentals.php" class="btn btn-default">Enter Rentals DB</a>
+	<a href="sands/featured.php" class="btn btn-default">Enter Featured DB</a>
 	<table class="table table-striped table-hover">
 		<?php
-
-		//setup login
-		$tableName = "cauth_users";
 
 		//establish connection
 		$conn = setupConnection();
 
 		//Get Columns
-		$cols = getColumns($conn, $tableName);
+		$cols = getColumns($conn, $userTable);
 
 		//Get fields
-		$results = getUserList($conn, $tableName);
+		$results = getUserList($conn, $userTable);
 
 		//disconnect
 		$conn = null;
