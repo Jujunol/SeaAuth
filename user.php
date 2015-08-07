@@ -25,7 +25,7 @@ if(!empty($userID)) {
 	<h3>User Management</h3>
 	<hr />
 	<a href="index.php" class="btn btn-default">&lt;-- Userlist</a>
-	<form class="form" method="POST" action="send-user.php">
+	<form class="form" method="POST" action="save-user.php">
 		<div class="form-group">
 			<label for="ccode" class="control-label">New SeaCode:</label>
 			<input type="text" class="form-control" name="ccode" id="ccode" maxlength="10" required value="<?php echo $userID; ?>" />
