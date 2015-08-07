@@ -23,7 +23,11 @@ require_once "../header.php";
 		$cols = array("Index", "Active", "Title");
 
 		//Get fields
-		$cmd = $conn->prepare("select `Index`, Active, Title from $featuredTable order by `Index`");
+		$sql = "select `Index`, Active, Title from $featuredTable";
+		if(isset($_GET['oa'])) $sql .= " where Active = 1";
+		if(isset($_GET['sort'])) $sql .= " order by " . addslashes(base64_decode($_GET['sort']));
+		else $sql .= " order by `Index`";
+		$cmd = $conn->prepare($sql);
 		$cmd->execute();
 		$results = $cmd->fetchAll();
 
@@ -32,9 +36,7 @@ require_once "../header.php";
 
 		//Print out our table
 		echo "<thead><tr>";
-		foreach($cols as $col) {
-			echo "<th>$col</th>";
-		}
+		echoColumns($cols);
 		echo "<th>Edit</th></tr></thead><tbody>";
 		foreach($results as $row) {
 			echo "<tr>";
@@ -46,6 +48,15 @@ require_once "../header.php";
 			//echo "<td><a href='delete-user.php?userID={$row['userID']}' onclick='return confirm(\"Are you sure?\");'>X</a></td></tr>";
 		}
 		echo "</tbody>";
+
+		function echoColumns(&$cols) {
+			$current = isset($_GET['sort']) ? $_GET['sort'] : "";
+			foreach($cols as $col) {
+				$col_ss = "`$col`"; //Make string safe
+				$val = base64_encode($col_ss . ($current == base64_encode($col_ss) ? " DESC" : ""));
+				echo "<th><a href='featured.php?sort=$val'>$col</a></th>";
+			}
+		}
 
 		?>
 	</table>
