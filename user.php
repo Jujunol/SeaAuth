@@ -7,16 +7,8 @@ require_once "header.php";
 $userID = isset($_GET['userID']) ? $_GET['userID'] : "";
 $addr = "";
 if(!empty($userID)) {
-	$tableName = "cauth_users";
-	$conn = setupConnection();
-
-	$user = getUser($conn, $tableName, $userID);
-
-	if($user !== null) {
-		$addr = $user['addr'];
-	}
-
-	$conn = null;
+	$user = getUser($conn, $userTable, $userID);
+	if($user !== null) $addr = $user['addr'];
 }
 
 ?>

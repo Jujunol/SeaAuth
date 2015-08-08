@@ -1,26 +1,25 @@
 <?php
 
+//Setup Connection and check authorization
 require_once "authlib.php";
 
+//Check if a UserID is specified
 $userID = $_GET['userID'];
-
-$tableName = "cauth_users";
-
-$conn = setupConnection();
-
 if(empty($userID)) {
 	header('Location: index.php');
 	die('');
 }
 
-$user = getUser($conn, $tableName, $userID);
-
+//Grab the user and set address to null
+$user = getUser($conn, $userTable, $userID);
 if($user !== null) {
-	$cmd = $conn->prepare("update $tableName set addr=null where userID = ?");
+	$cmd = $conn->prepare("update $userTable set addr=null where userID = ?");
 	$cmd->execute(array($userID));
 }
-header('Location: index.php');
 
+//Disconnect
 $conn = null;
+$altConn = null;
+header('Location: index.php');
 
 ?>

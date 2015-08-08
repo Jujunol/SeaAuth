@@ -6,27 +6,19 @@ require_once "../header.php";
 
 $propertyID = isset($_GET['propertyID']) ? $_GET['propertyID'] : "";
 
-//establish connection
-$conn = setupConnection();
-
 //Get Columns
-$cmd = $conn->prepare("desc $rentalTable");
+$cmd = $altConn->prepare("desc $rentalTable");
 $cmd->execute();
 $cols = $cmd->fetchAll(PDO::FETCH_COLUMN);
-//$cols = array("propertyID", "active", "title");
 
 $property = null;
 if(!empty($propertyID)) {
-	//Get fields
-	$cmd = $conn->prepare("select * from $rentalTable where `index` = :propertyID");
+	$cmd = $altConn->prepare("select * from $rentalTable where `index` = :propertyID");
 	$cmd->bindParam(":propertyID", $propertyID, PDO::PARAM_INT);
 	$cmd->execute();
 	$results = $cmd->fetchAll();
 	if(count($results) == 1) $property = $results[0];
 }
-
-//disconnect
-$conn = null;
 
 ?>
 <main id="content-wrapper" class="container">

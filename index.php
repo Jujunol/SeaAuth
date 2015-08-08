@@ -15,17 +15,11 @@ require_once "header.php";
 	<table class="table table-striped table-hover">
 		<?php
 
-		//establish connection
-		$conn = setupConnection();
-
 		//Get Columns
 		$cols = getColumns($conn, $userTable);
 
 		//Get fields
 		$results = getUserList($conn, $userTable);
-
-		//disconnect
-		$conn = null;
 
 		//Print out our table
 		echo "<thead><tr>";

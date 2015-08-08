@@ -5,6 +5,7 @@ $pageTitle = "SeaAuth - Unidentified Account";
 require_once "authlib.php";
 
 if(isValidID()) {
+	$conn = $altConn = null;
 	header('Location: index.php');
 	die('');
 }

@@ -13,13 +13,7 @@ require_once "../header.php";
 	<table class="table table-striped table-hover">
 		<?php
 
-		//establish connection
-		$conn = setupConnection();
-
-		//Get Columns
-		/*$cmd = $conn->prepare("desc $tableName");
-		$cmd->execute();
-		$cols = $cmd->fetchAll(PDO::FETCH_COLUMN);*/
+		//Set Columns
 		$cols = array("Index", "Active", "Title");
 
 		//Get fields
@@ -27,12 +21,9 @@ require_once "../header.php";
 		if(isset($_GET['oa'])) $sql .= " where Active = 1";
 		if(isset($_GET['sort'])) $sql .= " order by " . addslashes(base64_decode($_GET['sort']));
 		else $sql .= " order by `Index`";
-		$cmd = $conn->prepare($sql);
+		$cmd = $altConn->prepare($sql);
 		$cmd->execute();
 		$results = $cmd->fetchAll();
-
-		//disconnect
-		$conn = null;
 
 		//Print out our table
 		echo "<thead><tr>";

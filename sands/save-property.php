@@ -5,11 +5,8 @@ require_once "../authlib.php";
 $propertyID = $_POST['index'];
 $pid = $_POST['propertyID'];
 
-//establish connection
-$conn = setupConnection();
-
 //Get Columns
-$cmd = $conn->prepare("desc $rentalTable");
+$cmd = $altConn->prepare("desc $rentalTable");
 $cmd->execute();
 $cols = $cmd->fetchAll(PDO::FETCH_COLUMN);
 //$cols = array("propertyID", "active", "title");
@@ -32,11 +29,11 @@ if(!empty($pid) && $pid == $propertyID) {
 	}
 	$updateString = substr($updateString, 0, strlen($updateString) - 2);
 
-	$cmd = $conn->prepare("update $rentalTable set $updateString where `index` = ? limit 1");
+	$cmd = $altConn->prepare("update $rentalTable set $updateString where `index` = ? limit 1");
 	$cmd->execute($updateValues);
 
 	//Disconnect
-	$conn = null;
+	$conn = $altConn = null;
 	header('Location: rentals.php');
 	die('');
 }
@@ -55,11 +52,11 @@ for($i = 0; $i < count($cols); $i++) {
 }
 $updateString = substr($updateString, 0, strlen($updateString) - 2);
 
-$cmd = $conn->prepare("insert into $rentalTable values ($updateString)");
+$cmd = $altConn->prepare("insert into $rentalTable values ($updateString)");
 $cmd->execute($updateValues);
 
 //Disconnect
-$conn = null;
+$conn = $altConn = null;
 header('Location: rentals.php');
 
 ?>

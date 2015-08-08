@@ -1,5 +1,9 @@
 <?php
 
+//Check if connection is still active and kill it
+$conn = $altConn = null;
+
+//Stuff for footer
 $textList = array(
 	"If you want to logout, you can clear your ip in the edit panel and enter the code later.",
 	"You can make a copy of a rental by changing/removing the 'index' value.",
