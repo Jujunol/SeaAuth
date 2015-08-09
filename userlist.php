@@ -1,27 +1,23 @@
 <?php 
 
-$pageTitle = "SeaAuth - Active Users";
+$pageTitle = "SeaAuth - Registered Users";
 require_once "authlib.php";
 require_once "header.php";
 
 ?>
 <main id="content-wrapper" class="container">
 	<h1>SeaAuth</h1>
-	<h3>Recent Actions</h3>
+	<h3>Registered Users</h3>
 	<hr />
-	<a href="sands/rentals.php" class="btn btn-default">Rental Portal</a>
-	<a href="sands/featured.php" class="btn btn-default">Featured Portal</a>
 	<table class="table table-striped table-hover">
 		<?php
 
 		//Get Columns
-		$cols = array("logID", "username", "logTime", "logEvent");
+		$cols = getColumns($conn, $userTable);
 
 		//Get fields
 		$col_ss = implode(", ", $cols);
-		$cmd = $conn->prepare("select $col_ss from $logTable 
-			left join $userTable using(userID)
-			order by logTime");
+		$cmd = $conn->prepare("select $col_ss from $userTable order by userID");
 		$cmd->execute();
 		$results = $cmd->fetchAll();
 

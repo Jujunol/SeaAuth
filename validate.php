@@ -1,20 +1,28 @@
 <?php
 
-$userID = $_POST['ccode'];
-
-if(empty($userID)) {
-	header('Location: login.php');
-	die('');
-}
+$code = $_POST['ccode'];
 
 $killOverride = true;
 require_once "authlib.php";
 
-$user = getUser($conn, $userTable, $userID);
+$cmd = $conn->prepare("select userID from $codeTable where codename = :code");
+$cmd->bindParam(":code", $code, PDO::PARAM_STR, 10);
+$cmd->execute();
+$results = $cmd->fetchAll();
 
-if($user !== null && empty($user['addr'])) {
-	$cmd = $conn->prepare("update $userTable set addr = ? where userID = ? limit 1");
-	$cmd->execute(array($_SERVER['REMOTE_ADDR'], $userID));
+// print_r($results);
+// echo "<br>" . count($results) . "<br>";
+// echo empty($results[0]['userID']) ;
+
+if(count($results) === 1 && empty($results[0]['userID'])) {
+	// echo "<br>Check passed<br>";
+	$cmd = $conn->prepare("update $codeTable set userID = 
+		(select userID from $userTable where addr = :addr)
+		where codename = :code limit 1");
+	$cmd->bindParam(":addr", $_SERVER['REMOTE_ADDR'], PDO::PARAM_STR, 16);
+	$cmd->bindParam(":code", $code, PDO::PARAM_STR, 10);
+	$cmd->execute();
+	logEvent($conn, $logTable, "Has logged with SeaCode $code");
 	header('Location: index.php');
 }
 else header('Location: login.php');

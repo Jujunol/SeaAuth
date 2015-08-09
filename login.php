@@ -10,6 +10,21 @@ if(isValidID()) {
 	die('');
 }
 
+//Check if it's a new ip
+$addr = $_SERVER['REMOTE_ADDR'];
+$cmd = $conn->prepare("select userID from $userTable where addr = :addr");
+$cmd->bindParam(":addr", $addr, PDO::PARAM_STR, 16);
+$cmd->execute();
+$results = $cmd->fetchAll();
+
+if(count($results) === 0) {
+//if(!isset($_SESSION['userID'])) {
+	logEvent($conn, $logTable, "Forign device connected $addr");
+	$conn = $altConn = null;
+	header("Location: new-user.php");
+	die('');
+}
+
 require_once "header.php";
 
 ?>

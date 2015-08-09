@@ -1,27 +1,26 @@
 <?php
 
+$killOverride = true;
 require_once "authlib.php";
 
-$userID = $_POST['userID'];
-$newID = $_POST['ccode'];
+$username = $_POST['username'];
 
-if(!empty($userID)) {
-	$cmd = $conn->prepare("update $userTable set userID = ? where userID = ? limit 1");
-	$cmd->execute(array($newID, $userID));
+//Check if the username already exists
+$cmd = $conn->prepare("select userID from $userTable where username = :username");
+$cmd->bindParam(":username", $username, PDO::PARAM_STR, 25);
+$cmd->execute();
+$results = $cmd->fetchAll();
 
-	$conn = $altConn = null;
-	header('Location: index.php');
-	die('');
+if(count($results) === 0) {
+	$cmd = $conn->prepare("insert into $userTable (username, addr) 
+		values (:username, :addr)");
+	$cmd->bindParam(":username", $username, PDO::PARAM_STR, 25);
+	$cmd->bindParam(":addr", $_SERVER['REMOTE_ADDR'], PDO::PARAM_STR, 16);
+	$cmd->execute();
 }
 
-$user = getUser($conn, $userTable, $userID);
-if($user === null) {
-	$cmd = $conn->prepare("insert into $userTable (userID) values (?)");
-	$cmd->execute(array($newID));
-	header('Location: index.php');
-}
-else header('Location: user.php');
-
+//Disconnect
 $conn = $altConn = null;
+header('Location: new-user.php');
 
 ?>

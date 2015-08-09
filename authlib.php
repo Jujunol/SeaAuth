@@ -4,6 +4,8 @@ session_start();
 
 //Set Table names here
 $userTable = "cauth_users";
+$codeTable = "cauth_codes";
+$logTable = "cauth_log";
 $rentalTable = "Rentals";
 $featuredTable = "Featured";
 
@@ -16,15 +18,14 @@ if(!isset($killOverride) && !isValidID()) {
 }
 
 function isValidID() {
-	global $conn, $userTable;
+	global $conn, $userTable, $codeTable;
 	$addr = $_SERVER['REMOTE_ADDR'] ? : "Unknown";
-	$cmd = $conn->prepare("select * from $userTable where addr = '$addr'");
+	$cmd = $conn->prepare("select userID from $codeTable inner join $userTable using(userID) where addr = '$addr'");
 	$cmd->execute();
 	$results = $cmd->fetchAll();
 
-	if(count($results) == 1) {
+	if(count($results) === 1) {
 		$_SESSION['userID'] = $results[0]['userID'];
-		//header('Location: userlist.php');
 		return true;
 	}
 	return false;
@@ -69,6 +70,15 @@ function getUserList(&$conn, &$tableName) {
 //Returns the current User information
 function getCurrentUser(&$conn, &$tableName) {
 	return getUser($conn, $tableName, $_SESSION['userID']);
+}
+
+function logEvent(&$conn, &$tableName, $evt) {
+	$userID = (isset($_SESSION['userID']) ? $_SESSION['userID'] : "null");
+	$cmd = $conn->prepare("insert into $tableName (logEvent, userID)
+		values (:evt, $userID)");
+	$cmd->bindParam(":evt", $evt, PDO::PARAM_STR, 250);
+	//$cmd->bindParam(":userID", $userID, PDO::PARAM_INT);
+	$cmd->execute();
 }
 
 //Checks whether they have permission
