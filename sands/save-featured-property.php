@@ -29,6 +29,7 @@ if(!empty($pid) && $pid == $propertyID) {
 	}
 	$updateString = substr($updateString, 0, strlen($updateString) - 2);
 
+	logEvent($conn, $logTable, "Changed Featured Property " . $_POST['Index']);
 	$cmd = $altConn->prepare("update $featuredTable set $updateString where `Index` = ? limit 1");
 	$cmd->execute($updateValues);
 
@@ -52,6 +53,7 @@ for($i = 0; $i < count($cols); $i++) {
 }
 $updateString = substr($updateString, 0, strlen($updateString) - 2);
 
+logEvent($conn, $logTable, "Created New Featured Property");
 $cmd = $altConn->prepare("insert into $featuredTable values ($updateString)");
 $cmd->execute($updateValues);
 

@@ -29,6 +29,7 @@ if(!empty($pid) && $pid == $propertyID) {
 	}
 	$updateString = substr($updateString, 0, strlen($updateString) - 2);
 
+	logEvent($conn, $logTable, "Changed Rental Property " . $_POST['index']);
 	$cmd = $altConn->prepare("update $rentalTable set $updateString where `index` = ? limit 1");
 	$cmd->execute($updateValues);
 
@@ -52,6 +53,7 @@ for($i = 0; $i < count($cols); $i++) {
 }
 $updateString = substr($updateString, 0, strlen($updateString) - 2);
 
+logEvent($conn, $logTable, "Created New Rental Property");
 $cmd = $altConn->prepare("insert into $rentalTable values ($updateString)");
 $cmd->execute($updateValues);
 

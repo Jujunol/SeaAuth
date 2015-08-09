@@ -20,7 +20,9 @@ if(!isset($killOverride) && !isValidID()) {
 function isValidID() {
 	global $conn, $userTable, $codeTable;
 	$addr = $_SERVER['REMOTE_ADDR'] ? : "Unknown";
-	$cmd = $conn->prepare("select userID from $codeTable inner join $userTable using(userID) where addr = '$addr'");
+	$cmd = $conn->prepare("select userID from $codeTable 
+		inner join $userTable using(userID) 
+		where addr = '$addr'");
 	$cmd->execute();
 	$results = $cmd->fetchAll();
 

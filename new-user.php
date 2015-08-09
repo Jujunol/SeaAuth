@@ -23,7 +23,7 @@ if(count($results) === 1) {
 	<h1>SeaAuth</h1>
 	<h3>Register your Device</h3>
 	<hr />
-	<form class="form-horizontal" method="POST" action="save-user.php">
+	<form class="form" method="POST" action="save-user.php">
 		<div class="form-group">
 			<label for="username" class="control-label">Enter a recogizable name for this device:</label>
 			<input type="text" class="form-control" id="username" name="username" maxlength="25" />

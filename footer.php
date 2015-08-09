@@ -26,3 +26,4 @@ $randText = $textList[rand(0, count($textList) - 1)];
 </footer>
 </body>
 </html>
+<?php ob_flush(); ?>

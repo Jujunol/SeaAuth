@@ -1,4 +1,7 @@
-#Easier Debugging
+#Easier Debugging With auto_increment keys
+drop table if exists cauth.cauth_codes;
+drop table if exists cauth.cauth_log;
+drop table if exists cauth.cauth_users;
 drop database if exists cauth;
 create database cauth;
 use cauth;

@@ -18,7 +18,10 @@ $cmd->execute();
 $results = $cmd->fetchAll();
 
 if(count($results) === 0) {
-//if(!isset($_SESSION['userID'])) {
+	if(isset($_SESSION['userID'])) {
+		unset($_SESSION);
+		session_destroy();
+	}
 	logEvent($conn, $logTable, "Forign device connected $addr");
 	$conn = $altConn = null;
 	header("Location: new-user.php");

@@ -12,6 +12,7 @@ $cmd->execute();
 $results = $cmd->fetchAll();
 
 if(count($results) === 0) {
+	logEvent($conn, $logTable, "$username registered their device");
 	$cmd = $conn->prepare("insert into $userTable (username, addr) 
 		values (:username, :addr)");
 	$cmd->bindParam(":username", $username, PDO::PARAM_STR, 25);

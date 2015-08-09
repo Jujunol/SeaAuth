@@ -6,6 +6,7 @@ $code = $_POST['ccode'];
 $oldCode = $_POST['oldCode'];
 
 if(!empty($oldCode)) {
+	logEvent($conn, $logTable, "Changed SeaCode $oldCode to $code");
 	$cmd = $conn->prepare("update $codeTable set codename = :code where codename = :oldCode");
 	$cmd->bindParam(":code", $code, PDO::PARAM_STR, 10);
 	$cmd->bindParam(":oldCode", $oldCode, PDO::PARAM_STR, 10);
@@ -22,6 +23,7 @@ $cmd->execute();
 $results = $cmd->fetchAll();
 
 if(count($results) === 0) {
+	logEvent($conn, $logTable, "Added new SeaCode $code");
 	$cmd = $conn->prepare("insert into $codeTable (codename) values (:code)");
 	$cmd->bindParam(":code", $code, PDO::PARAM_STR, 10);
 	$cmd->execute();

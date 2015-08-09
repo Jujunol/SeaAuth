@@ -9,8 +9,18 @@ require_once "header.php";
 	<h1>SeaAuth</h1>
 	<h3>Recent Actions</h3>
 	<hr />
-	<a href="sands/rentals.php" class="btn btn-default">Rental Portal</a>
-	<a href="sands/featured.php" class="btn btn-default">Featured Portal</a>
+	<div class="row">
+		<div class="col-md-3">
+			<a href="sands/rentals.php" class="btn btn-default">Rental Portal</a>
+			<a href="sands/featured.php" class="btn btn-default">Featured Portal</a>
+		</div>
+		<div class="col-md-3 col-md-offset-9">
+			<form method="GET">
+				<input type="text" name="search" />
+				<button type="submit" class="btn btn-default">Search</button>
+			</form>
+		</div>
+	</div>
 	<table class="table table-striped table-hover">
 		<?php
 
@@ -19,8 +29,10 @@ require_once "header.php";
 
 		//Get fields
 		$col_ss = implode(", ", $cols);
+		$where = isset($_GET['search']) ? str_replace('"', "'", $_GET['search']) : "1";
 		$cmd = $conn->prepare("select $col_ss from $logTable 
 			left join $userTable using(userID)
+			where $where
 			order by logTime");
 		$cmd->execute();
 		$results = $cmd->fetchAll();
