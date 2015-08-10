@@ -18,15 +18,18 @@ $cmd->execute();
 $results = $cmd->fetchAll();
 
 if(count($results) === 0) {
+	//For Debugging 
 	if(isset($_SESSION['userID'])) {
 		unset($_SESSION);
 		session_destroy();
 	}
-	logEvent($conn, $logTable, "Forign device connected $addr");
+	//End of debugging
+	logEvent($conn, $logTable, "Foreign device connected $addr");
 	$conn = $altConn = null;
 	header("Location: new-user.php");
 	die('');
 }
+$_SESSION['userID'] = $results[0]['userID'];
 
 require_once "header.php";
 

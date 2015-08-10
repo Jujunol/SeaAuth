@@ -53,27 +53,6 @@ function getColumns(&$conn, &$tableName) {
 	return $cmd->fetchAll(PDO::FETCH_COLUMN);
 }
 
-//Returns the user by ID
-function getUser(&$conn, &$tableName, &$userID) {
-	$cmd = $conn->prepare("select * from $tableName where userID = ?");
-	$cmd->execute(array($userID));
-	$users = $cmd->fetchAll();
-	if(count($users) != 1) return null;
-	return $users[0];
-}
-
-//Returns the list of users
-function getUserList(&$conn, &$tableName) {
-	$cmd = $conn->prepare("select * from $tableName");
-	$cmd->execute();
-	return $cmd->fetchAll();
-}
-
-//Returns the current User information
-function getCurrentUser(&$conn, &$tableName) {
-	return getUser($conn, $tableName, $_SESSION['userID']);
-}
-
 function logEvent(&$conn, &$tableName, $evt) {
 	$userID = (isset($_SESSION['userID']) ? $_SESSION['userID'] : "null");
 	$cmd = $conn->prepare("insert into $tableName (logEvent, userID)

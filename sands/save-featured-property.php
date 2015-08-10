@@ -15,7 +15,7 @@ if(!empty($pid) && $pid == $propertyID) {
 	//Prepare Updated values
 	$updateValues = array();
 	foreach($cols as $col) {
-		array_push($updateValues, $_POST[$col]);
+		array_push($updateValues, trim($_POST[$col]));
 	}
 	array_push($updateValues, $propertyID);
 	
