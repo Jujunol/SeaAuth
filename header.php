@@ -15,7 +15,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<?php if(isset($_SESSION['userID']) && dirname($_SERVER['REQUEST_URI']) == "/cauth") { ?>
+	<?php if(isset($_SESSION['userID']) && (dirname($_SERVER['REQUEST_URI']) == "/cauth" || $_SERVER['REQUEST_URI'] == "/cauth/")) { ?>
 	<header>
 		<nav class="navbar navbar-default">
 			<div class="navbar-header">

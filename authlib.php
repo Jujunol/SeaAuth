@@ -9,15 +9,19 @@ $logTable = "cauth_log";
 $rentalTable = "Rentals";
 $featuredTable = "Featured";
 
+//Setup connections to databases
 $conn; $altConn;
 setupConnections($conn, $altConn);
 
+//Are they allowed to be here?
 if(!isset($killOverride) && !isValidID()) {
-	header('Location: login.php');
+	header('Location: /cauth/login.php');
 	die('');
 }
 
+//Let us check who this is
 function isValidID() {
+	//Grab the user from the database
 	global $conn, $userTable, $codeTable;
 	$addr = $_SERVER['REMOTE_ADDR'] ? : "Unknown";
 	$cmd = $conn->prepare("select userID from $codeTable 
@@ -27,8 +31,12 @@ function isValidID() {
 	$results = $cmd->fetchAll();
 
 	if(count($results) === 1) {
-		$_SESSION['userID'] = $results[0]['userID'];
-		return true;
+		require_once $_SERVER['DOCUMENT_ROOT'] . "/cauth/crypto.php";
+		$_SESSION['userID'] = $results[0]['userID']; //Update Session Var
+		//Second security layer
+		$realKey = getUserKey($conn);
+		//$realKey = sha1($addr); //Use this if you don't have a crypto class
+		return (isset($_COOKIE['uk']) && $realKey !== null && $realKey == $_COOKIE['uk']);
 	}
 	return false;
 }
