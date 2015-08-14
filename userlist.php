@@ -9,6 +9,7 @@ require_once "header.php";
 	<h1>SeaAuth</h1>
 	<h3>Registered Users</h3>
 	<hr />
+	<a class="btn btn-default" href="?di">Show Inactive</a>
 	<table class="table table-striped table-hover">
 		<?php
 
@@ -17,7 +18,8 @@ require_once "header.php";
 
 		//Get fields
 		$col_ss = implode(", ", $cols);
-		$cmd = $conn->prepare("select $col_ss from $userTable order by userID");
+		$where = isset($_GET['di']) ? "": "where active = '1'";
+		$cmd = $conn->prepare("select $col_ss from $userTable $where order by userID");
 		$cmd->execute();
 		$results = $cmd->fetchAll();
 
@@ -26,13 +28,16 @@ require_once "header.php";
 		foreach($cols as $col) {
 			echo "<th>$col</th>";
 		}
-		echo "</tr></thead><tbody>";
+		echo "<th>Deactivate</tr></thead><tbody>";
 		foreach($results as $row) {
 			echo "<tr>";
 			foreach($cols as $col) {
 				$val = strlen($row[$col]) > 47 ? substr($row[$col], 0, 47) . "..." : $row[$col];
 				echo "<td>$val</td>";
 			}
+			$params = "?userID=" . base64_encode($row['userID']);
+			$params .= $row['active'] == 0 ? "&undo" : "";
+			echo "<td><a href='revoke-user.php$params'>X</a></td>";
 		}
 		echo "</tbody>";
 

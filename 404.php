@@ -6,7 +6,7 @@ require_once "header.php";
 ?>
 <main class="container">
 	<h3>404 Page not found</h3>
-	<blockquote>
+	<blockquote class="alert alert-danger">
 		Opps, it doesn't appear this page exists....<br />
 		Our support staff will fix it as soon as they can.
 		<footer>Sincerly, The Support Staff</footer>

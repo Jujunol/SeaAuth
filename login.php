@@ -12,7 +12,7 @@ if(isValidID()) {
 
 //Check if it's a new ip
 $addr = $_SERVER['REMOTE_ADDR'];
-$cmd = $conn->prepare("select userID from $userTable where addr = :addr");
+$cmd = $conn->prepare("select userID, active from $userTable where addr = :addr");
 $cmd->bindParam(":addr", $addr, PDO::PARAM_STR, 16);
 $cmd->execute();
 $results = $cmd->fetchAll();
@@ -27,6 +27,10 @@ if(count($results) === 0) {
 	logEvent($conn, $logTable, "Foreign device connected $addr");
 	$conn = $altConn = null;
 	header("Location: new-user.php");
+	die('');
+}
+else if($results[0]['active'] == '0') {
+	header('Location: lockout.php');
 	die('');
 }
 $_SESSION['userID'] = $results[0]['userID'];

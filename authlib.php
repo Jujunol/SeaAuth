@@ -26,7 +26,7 @@ function isValidID() {
 	$addr = $_SERVER['REMOTE_ADDR'] ? : "Unknown";
 	$cmd = $conn->prepare("select userID from $codeTable 
 		inner join $userTable using(userID) 
-		where addr = '$addr'");
+		where addr = '$addr' and active = '1'");
 	$cmd->execute();
 	$results = $cmd->fetchAll();
 
