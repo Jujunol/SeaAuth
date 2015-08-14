@@ -16,7 +16,7 @@ require_once "header.php";
 		</div>
 		<div class="col-md-3 col-md-offset-6">
 			<form method="GET" class="form-horizontal">
-				<input type="text" name="search" />
+				<input type="text" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ""; ?>" />
 				<button type="submit" class="btn btn-default">Search</button>
 			</form>
 		</div>
