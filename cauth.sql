@@ -8,6 +8,7 @@ use cauth;
 
 create table if not exists cauth_users (
 	userID int not null auto_increment,
+	active enum('0', '1') not null default '1',
 	username varchar(25) not null,
     addr varchar(16) not null,
 	primary key(userID)

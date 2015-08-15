@@ -28,7 +28,7 @@ require_once "header.php";
 		foreach($cols as $col) {
 			echo "<th>$col</th>";
 		}
-		echo "<th>Deactivate</tr></thead><tbody>";
+		echo "<th>Edit</th><th>Deactivate</tr></thead><tbody>";
 		foreach($results as $row) {
 			echo "<tr>";
 			foreach($cols as $col) {
@@ -37,7 +37,8 @@ require_once "header.php";
 			}
 			$params = "?userID=" . base64_encode($row['userID']);
 			$params .= $row['active'] == 0 ? "&undo" : "";
-			echo "<td><a href='revoke-user.php$params'>X</a></td>";
+			echo "<td><a href='user.php$params'>Edit</a></td>";
+			echo "<td><a href='revoke-user.php$params' onclick='return confirm(\"Are you sure?\");'>X</a></td>";
 		}
 		echo "</tbody>";
 

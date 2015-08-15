@@ -13,7 +13,6 @@ $cmd->execute();
 $results = $cmd->fetchAll();
 
 if(count($results) === 1) {
-//if(isset($_SESSION['userID'])) {
 	header('Location: login.php');
 	die('');
 }
@@ -28,7 +27,7 @@ if(count($results) === 1) {
 			<label for="username" class="control-label">Enter a recogizable name for this device:</label>
 			<input type="text" class="form-control" id="username" name="username" maxlength="25" />
 		</div>
-		<button type="submit" class="btn btn-success">Save</button>
+		<button type="submit" class="btn btn-success col-md-1 col-md-offset-11">Save</button>
 	</form>
 </main>
 <?php require_once "footer.php"; ?>

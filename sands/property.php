@@ -28,7 +28,7 @@ if(!empty($propertyID)) {
 	<a  style="position: fixed; top: 32px; right: 32px;" href="#page-top">Back to top</a>
 	<a href="rentals.php" class="btn btn-default">&lt;-- Property List</a>
 	<form class="form-horizontal" method="POST" action="save-property.php">
-		<button type="submit" class="btn btn-success col-md-offset-11">Save Changes</button>
+		<button type="submit" class="btn btn-success col-md-1 col-md-offset-11">Save Changes</button>
 		<?php
 
 		foreach($cols as $col) {
