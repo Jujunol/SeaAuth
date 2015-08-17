@@ -33,6 +33,7 @@ function isValidID() {
 	if(count($results) === 1) {
 		require_once $_SERVER['DOCUMENT_ROOT'] . "/cauth/crypto.php";
 		$_SESSION['userID'] = $results[0]['userID']; //Update Session Var
+		$_SESSION['isLogged'] = true;
 		//Second security layer
 		$realKey = getUserKey($conn);
 		//$realKey = sha1($addr); //Use this if you don't have a crypto class
@@ -71,7 +72,21 @@ function logEvent(&$conn, &$tableName, $evt) {
 }
 
 //Checks whether they have permission
-function hasPerm(&$user, $perm) {
+function hasPerm($perm, &$user = null) {
+	if($user === null) {
+		global $conn, $codeTable;
+
+		//Get Current user
+		$cmd = $conn->prepare("select perms from $codeTable where userID = :userID");
+		$cmd->bindParam(":userID", $_SESSION['userID'], PDO::PARAM_INT);
+		$cmd->execute();
+		$results = $cmd->fetchAll();
+
+		if(count($results) === 1) {
+			$user = $results[0];
+		}
+		else return false;
+	}
 	$perms = explode(',', $user['perms']);
 	$allowed = false;
 	foreach($perms as $p) {

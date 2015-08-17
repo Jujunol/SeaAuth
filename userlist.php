@@ -4,12 +4,17 @@ $pageTitle = "SeaAuth - Registered Users";
 require_once "authlib.php";
 require_once "header.php";
 
+if(!hasPerm('users.list', $user)) {
+	header('Location: index.php');
+	die;
+}
+
 ?>
 <main id="content-wrapper" class="container">
-	<h1>SeaAuth</h1>
-	<h3>Registered Users</h3>
-	<hr />
-	<a class="btn btn-default" href="?di">Show Inactive</a>
+	<div class="page-header">
+		<h1>SeaAuth <small>User Management</small></h1>
+	</div>
+	<a class="btn btn-warning" href="?di">Show Inactive</a>
 	<table class="table table-striped table-hover">
 		<?php
 
@@ -18,7 +23,7 @@ require_once "header.php";
 
 		//Get fields
 		$col_ss = implode(", ", $cols);
-		$where = isset($_GET['di']) ? "": "where active = '1'";
+		$where = isset($_GET['di']) && hasPerm("users.inactive", $user) ? "": "where active = '1'";
 		$cmd = $conn->prepare("select $col_ss from $userTable $where order by userID");
 		$cmd->execute();
 		$results = $cmd->fetchAll();
@@ -32,7 +37,8 @@ require_once "header.php";
 		foreach($results as $row) {
 			echo "<tr>";
 			foreach($cols as $col) {
-				$val = strlen($row[$col]) > 47 ? substr($row[$col], 0, 47) . "..." : $row[$col];
+				if($col == "addr" && !hasPerm("users.addr", $user)) $val = "***.***.***.***";
+				else $val = strlen($row[$col]) > 47 ? substr($row[$col], 0, 47) . "..." : $row[$col];
 				echo "<td>$val</td>";
 			}
 			$params = "?userID=" . base64_encode($row['userID']);

@@ -21,9 +21,9 @@ $user = $results[0];
 
 ?>
 <main id="content-wrapper" class="container">
-	<h1>SeaAuth</h1>
-	<h3>Register your Device</h3>
-	<hr />
+	<div class="page-header">
+		<h1>SeaAuth <small>User Management</small></h1>
+	</div>
 	<form class="form" method="POST" action="save-user.php">
 		<div class="form-group">
 			<label for="username" class="control-label">Display Name:</label>
@@ -34,7 +34,7 @@ $user = $results[0];
 			<input disabled type="text" class="form-control" id="addr" name="addr" value="<?php echo $user['addr']; ?>" />
 		</div>
 		<input type="hidden" name="userID" value="<?php echo $userID; ?>" />
-		<button type="submit" class="btn btn-success col-md-1 col-md-offset-11">Save</button>
+		<button type="submit" class="btn btn-warning col-md-1 col-md-offset-11">Save</button>
 	</form>
 </main>
 <?php require_once "footer.php"; ?>

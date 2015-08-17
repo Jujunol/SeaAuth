@@ -1,7 +1,7 @@
 <?php 
 
 $killOverride = false;
-$pageTitle = "SeaAuth - Userlist";
+$pageTitle = "SeaAuth - Registering your Device";
 require_once "authlib.php";
 require_once "header.php";
 
@@ -19,15 +19,15 @@ if(count($results) === 1) {
 
 ?>
 <main id="content-wrapper" class="container">
-	<h1>SeaAuth</h1>
-	<h3>Register your Device</h3>
-	<hr />
+	<div class="page-header">
+		<h1>SeaAuth <small>Registering your Device</small></h1>
+	</div>
 	<form class="form" method="POST" action="save-user.php">
 		<div class="form-group">
 			<label for="username" class="control-label">Enter a recogizable name for this device:</label>
 			<input type="text" class="form-control" id="username" name="username" maxlength="25" />
 		</div>
-		<button type="submit" class="btn btn-success col-md-1 col-md-offset-11">Save</button>
+		<button type="submit" class="btn btn-warning col-md-1 col-md-offset-11">Save</button>
 	</form>
 </main>
 <?php require_once "footer.php"; ?>

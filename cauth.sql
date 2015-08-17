@@ -16,6 +16,7 @@ create table if not exists cauth_users (
 
 create table if not exists cauth_codes (
     codename varchar(10) not null,
+	perms varchar(100) not null default '*';
     userID int,
     
     constraint codes_fk foreign key (userID) references cauth_users(userID),

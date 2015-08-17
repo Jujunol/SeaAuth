@@ -1,21 +1,28 @@
-<?php ob_start(); ?>
+<?php ob_start(); 
+
+$user = null;
+
+?>
 <!DOCTYPE html>
 <html lang="en-ca">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title><?php echo $pageTitle; ?></title>
+
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<!--
-	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.css" />
+ 	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
 	-->
-	<script src="/res/jQuery.js"></script>
+ 	<link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.css" />
+	
+ 	<script src="/res/jQuery.js"></script>
 	<!-- <script src="/bootstrap/js/bootstrap.min.js"></script> -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	
 </head>
 <body>
-	<?php if(isset($_SESSION['userID']) && (dirname($_SERVER['REQUEST_URI']) == "/cauth" || $_SERVER['REQUEST_URI'] == "/cauth/")) { ?>
+	<?php if(isset($_SESSION['isLogged']) && (dirname($_SERVER['REQUEST_URI']) == "/cauth" || $_SERVER['REQUEST_URI'] == "/cauth/")) { ?>
 	<header>
 		<nav class="navbar navbar-default">
 			<div class="navbar-header">
@@ -28,8 +35,11 @@
 			<div class="collapse navbar-collapse" id="mainNav">
 	    		<ul class="nav navbar-nav">
 	    			<li><a href="index.php">Home</a></li>
-	    			<li><a href="codelist.php">Codes</a></li>
-	    			<li><a href="userlist.php">Users</a></li>
+	    			<?php
+	    			if(hasPerm("codes.list", $user)) echo '<li><a href="codelist.php">Codes</a></li>';
+	    			if(hasPerm("users.list", $user)) echo '<li><a href="userlist.php">Users</a></li>';
+	    			?>
+	    			<li><a href="logout.php">Logout</a></li>
 	    		</ul>
 	    	</div>
 		</nav>

@@ -1,14 +1,14 @@
 <?php 
 
-$pageTitle = "SeaAuth - Featured Properties";
+$pageTitle = "SeaAuth - Featured Property Management";
 require_once "../authlib.php";
 require_once "../header.php";
 
 ?>
 <main id="content-wrapper" class="container">
-	<h1>SeaAuth</h1>
-	<h3>Feature Property Management</h3>
-	<hr />
+	<div class="page-header">
+		<h1>SeaAuth <small>Featured Property Management</small></h1>
+	</div>
 	<a href="../index.php" class="btn btn-default">&lt;-- SeaAuth</a>
 	<table class="table table-striped table-hover">
 		<?php

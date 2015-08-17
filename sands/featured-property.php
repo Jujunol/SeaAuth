@@ -22,13 +22,13 @@ if(!empty($propertyID)) {
 
 ?>
 <main id="content-wrapper" class="container">
-	<h1 id="page-top">SeaAuth</h1>
-	<h3>Featured Property Management</h3>
-	<hr />
-	<a  style="position: fixed; top: 32px; right: 32px;" href="#page-top">Back to top</a>
+	<div class="page-header">
+		<h1>SeaAuth <small>Featured Property Management</small></h1>
+	</div>
+	<a  style="position: fixed; top: 32px; right: 32px;" href="#content-wrapper">Back to top</a>
 	<a href="featured.php" class="btn btn-default">&lt;-- Property List</a>
 	<form class="form-horizontal" method="POST" action="save-featured-property.php">
-		<button type="submit" class="btn btn-success col-md-1 col-md-offset-11">Save Changes</button>
+		<button type="submit" class="btn btn-warning col-md-1 col-md-offset-11">Save Changes</button>
 		<?php
 
 		foreach($cols as $col) {

@@ -6,6 +6,12 @@ require_once "authlib.php";
 $userID = $_POST['userID'];
 $username = $_POST['username'];
 
+if(!empty($userID) && !hasPerm("users.edit")) {
+	$conn = $altConn = null;
+	header('Location: user.php');
+	die;
+}
+
 //Check if the username already exists
 $cmd = $conn->prepare("select userID from $userTable where username = :username");
 $cmd->bindParam(":username", $username, PDO::PARAM_STR, 25);

@@ -1,26 +1,33 @@
 <?php 
 
-$pageTitle = "SeaAuth - Active Codes";
+$pageTitle = "SeaAuth - Code Management";
 require_once "authlib.php";
 require_once "header.php";
 
+if(!hasPerm("codes.list", $user)) {
+	header('Location: index.php');
+	die;
+}
+
 ?>
 <main id="content-wrapper" class="container">
-	<h1>SeaAuth</h1>
-	<h3>Code Management</h3>
-	<hr />
-	<a href="code.php" class="btn btn-default">Add Code</a>
-	<a href="?di" class="btn btn-default">Show Inactive</a>
+	<div class="page-header">
+		<h1>SeaAuth <small>Code Management</small></h1>
+	</div>
+	<div class="btn-group">
+		<a href="code.php" class="btn btn-warning">Add Code</a>
+		<a href="?di" class="btn btn-warning">Show Inactive</a>
+		<a href="permlist.php" class="btn btn-warning">Permission List</a>
+	</div>
 	<table class="table table-striped table-hover">
 		<?php
 
 		//Get Columns
-		//$cols = getColumns($conn, $userTable);
-		$cols = array("codename", "username");
+		$cols = array("codename", "username", "perms");
 
 		//Get fields
 		$col_ss = implode(", ", $cols) . ", userID";
-		$joinType = (isset($_GET['di']) ? "left" : "") . " join";
+		$joinType = (isset($_GET['di']) && hasPerm("codes.inactive", $user) ? "left" : "") . " join";
 		$cmd = $conn->prepare("select $col_ss from $codeTable 
 			$joinType $userTable using(userID)");
 		$cmd->execute();
