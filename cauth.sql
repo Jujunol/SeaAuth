@@ -1,4 +1,4 @@
-#Easier Debugging With auto_increment keys
+#Easier Debugging 
 drop table if exists cauth.cauth_codes;
 drop table if exists cauth.cauth_log;
 drop table if exists cauth.cauth_users;
